@@ -1,12 +1,11 @@
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsAnything.anything;
 
 @DisplayName("PhoneBookHamcrestTest Class")
 public class PhoneBookHamcrestTest {
@@ -66,19 +65,28 @@ public class PhoneBookHamcrestTest {
     }
 
     @Test
-    public void contactShouldbe() {
+    public void contactShouldbeReturnIfNumberIsPresent() {
         PhoneBook phoneBook = new PhoneBook();
         String testGroup = "TestGroup";
         Contact contact = new Contact("TestName", 8_987_654_3210L);
         phoneBook.createGrouptoPhoneBook(testGroup);
+//        можно сделать mock  с помощью Mockito.
         phoneBook.addContacttoGroups(contact, testGroup);
         Optional<Contact> actual = phoneBook.searchContact(8_987_654_3210L);
         Contact contact1 = null;
         if (actual.isPresent()) {
             contact1 = actual.get();
         }
-       assertThat(contact1,Matchers.is(contact));
+        assertThat(contact1, Matchers.is(contact));
 
+
+    }
+
+    @Test
+    public void searchContactShouldReturnEmptyOptional() {
+        long number = 4_000_000_0001L;
+        PhoneBook phoneBook = new PhoneBook();
+        assertThat(phoneBook.searchContact(number), Matchers.equalTo(Optional.empty()));
     }
 
 
